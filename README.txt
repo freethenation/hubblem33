@@ -1,4 +1,4 @@
-NASA released a huge mosaic of the Triangulum Galaxy (M33). This repo contains a zoomable viewer for mosaic.
+NASA released a huge mosaic of the Triangulum Galaxy (M33). This repo contains a zoomable viewer for the mosaic.
 
 You can view the mosaic at https://freethenation.github.io/hubblem33/
 
