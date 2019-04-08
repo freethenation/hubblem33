@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Triangulum galaxy (M33)</title>
+    <link rel="stylesheet" href="ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="polyfill.min.js"></script>
+    <script src="ol.js"></script>
+    <style>
+        html {
+            background-color: black;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+    var extent = [0, -41147, 32073, 0];
+    var proj = new ol.proj.Projection({
+        code: 'ZOOMIFY',
+        units: 'pixels',
+        extent: extent
+    })
+    {
+        let ZOOM_LEVELS = 7+1 //1 is for zoom level 0
+        let currRes = 1
+        var resolutions = Array.from(Array(ZOOM_LEVELS), function(){
+            let c = currRes
+            currRes *= 2
+            return c
+        })
+        resolutions = resolutions.reverse()
+    }
+    var tilegrid = new ol.tilegrid.TileGrid({
+        extent: extent,
+        resolutions: resolutions,
+        tileSize:[512, 512],
+    });
+
+    var mousePositionControl = new ol.control.MousePosition({
+        coordinateFormat: ol.coordinate.createStringXY(0),
+    });
+
+    var map = new ol.Map({
+        target: 'map',
+        controls: [mousePositionControl],
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.XYZ({
+                    tileGrid: tilegrid,
+                    url: 'http://localhost:8080/dz/{z}/{y}/{x}.jpg',
+                    projection: proj,
+                }),
+            }),
+            /*
+            new ol.layer.Tile({
+                source: new ol.source.TileDebug({
+                    tileGrid: tilegrid,
+                    projection: proj
+                }),
+            }),
+            */
+        ],
+        view: new ol.View({
+            center: ol.extent.getCenter(extent),
+            zoom: 2,
+            minZoom: 2,
+            projection: proj,
+            extent:extent,
+            resolutions: tilegrid.getResolutions(),
+        })
+    });
+    </script>
+  </body>
+</html>
